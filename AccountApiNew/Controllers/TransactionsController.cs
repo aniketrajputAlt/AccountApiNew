@@ -1,4 +1,5 @@
-﻿using AccountApiNew.Repository;
+﻿using AccountApiNew.Model;
+using AccountApiNew.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -17,22 +18,32 @@ namespace AccountApiNew.Controllers
         }
 
         [HttpPost("transfer")]
-        public async Task<IActionResult> TransferFunds(long sourceAccountId, long destinationAccountId, decimal amount)
+        public async Task<IActionResult> TransferFunds(FundTransferModel transferModel)
         {
-
-            if (sourceAccountId <= 0 || destinationAccountId <= 0 || amount <= 0)
+            try
             {
-                return BadRequest("Invalid input parameters.");
+                if (transferModel.sourceAccountId <= 0 || transferModel.destinationAccountId <= 0 || transferModel.amount <= 0)
+                {
+                    return BadRequest("Invalid input parameters.");
+                }
+
+                var result = await _transactionRepository.FundTransfer(transferModel.sourceAccountId, transferModel.destinationAccountId, transferModel.amount);
+
+                if (result)
+                {
+                    return Ok("Fund transfer successful.");
+                }
+                else
+                {
+                    return StatusCode(400, "Fund transfer failed. ");
+                }
             }
-
-            var result = await _transactionRepository.FundTransfer(sourceAccountId, destinationAccountId, amount);
-
-            if (result)
+            catch(Exception ex)
             {
-                return Ok("Fund transfer successful.");
-            }
 
-            return StatusCode(500, "Fund transfer failed.");
+                return StatusCode(500, "Fund transfer failed. "+ ex.Message);
+            }
+        
         }
         [HttpGet("transactions/{accountId}")]
         public async Task<IActionResult> GetTransactions(long accountId)

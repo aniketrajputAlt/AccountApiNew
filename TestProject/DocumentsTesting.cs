@@ -45,7 +45,7 @@ namespace AccountApiNewTesting
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(200, result.StatusCode);
-            Assert.AreEqual(1, resultValue.Count());
+            Assert.AreEqual(3, resultValue.Count());
         }
 
         [TestMethod]

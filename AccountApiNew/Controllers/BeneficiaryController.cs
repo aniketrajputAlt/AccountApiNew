@@ -31,7 +31,7 @@ namespace AccountApiNew.Controllers
            
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Beneficiary>> PostBeneficiary(BeneficiaryInputModel beneficiary)
         {
             try
@@ -47,8 +47,8 @@ namespace AccountApiNew.Controllers
          
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBeneficiary(long id)
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> DeleteBeneficiary(int id)
         {
             try
             {

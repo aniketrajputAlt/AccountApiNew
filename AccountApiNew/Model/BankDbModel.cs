@@ -7,6 +7,12 @@ namespace AccountApiNew.Model
 {
 
     // accounts , beneficiary, transaction , acounttype, branchs , 
+    public class FundTransferModel
+    {
+        public long sourceAccountId {  get; set; }
+        public long destinationAccountId {  get; set; }
+        public decimal amount {  get; set; }
+    }
     public class CustomerDto
     {
         

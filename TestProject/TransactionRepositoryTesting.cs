@@ -135,9 +135,13 @@ namespace AccountApiNewTesting
             // Arrange
             long sourceAccountId = 2, destinationAccountId = 3;
             decimal amount = 10.0m;
+            FundTransferModel model = new FundTransferModel();
+            model.sourceAccountId = sourceAccountId;
+            model.destinationAccountId = destinationAccountId;
+            model.amount = amount;
 
             // Act
-            var result = await _controller.TransferFunds(sourceAccountId, destinationAccountId, amount);
+            var result = await _controller.TransferFunds(model);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(OkObjectResult));
@@ -151,9 +155,13 @@ namespace AccountApiNewTesting
             // Arrange
             long sourceAccountId = -1, destinationAccountId = 3;
             decimal amount = 100.0m;
+            FundTransferModel model = new FundTransferModel();
+            model.sourceAccountId = sourceAccountId;
+            model.destinationAccountId = destinationAccountId;
+            model.amount = amount;
 
             // Act
-            var result = await _controller.TransferFunds(sourceAccountId, destinationAccountId, amount);
+            var result = await _controller.TransferFunds(model);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));

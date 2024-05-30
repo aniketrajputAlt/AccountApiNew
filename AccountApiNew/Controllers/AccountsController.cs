@@ -35,7 +35,7 @@ namespace AccountApiNew.Controllers
             }
         }
         // POST: api/Accounts
-        [HttpPost]
+        [HttpPost("CreateAccount")]
         public async Task<IActionResult> CreateAccount([FromBody] AccountInputModel input)
         {
             if (input == null)
@@ -56,7 +56,7 @@ namespace AccountApiNew.Controllers
 
 
         // GET: api/Accounts/{id}
-        [HttpGet("{id}")]
+        [HttpGet("Detail/{id}")]
         public async Task<ActionResult<object>> GetAccountById(long id)
         {
             try
@@ -87,7 +87,7 @@ namespace AccountApiNew.Controllers
 
 
         // DELETE: api/Accounts/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteAccount(long id)
         {
             try

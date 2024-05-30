@@ -193,7 +193,7 @@ namespace AccountApiNewTesting
         public async Task DeleteAccount_ValidId_DeletesAccount()
         {
             // Arrange
-            long accountIdToDelete = 10063;
+            long accountIdToDelete = 10072;
 
             // Act
             await _repository.DeleteAccount(accountIdToDelete);

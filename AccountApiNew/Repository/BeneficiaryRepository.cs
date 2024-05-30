@@ -40,6 +40,12 @@ namespace AccountApiNew.Repository
                     throw new ArgumentException("Main account does not exist in Accounts.", nameof(beneficiaryInput.AccountId));
                 }
 
+                var benefIfsc = await _context.Branches.AnyAsync(a => a.BranchID == beneficiaryInput.BenefIFSC);
+                if (!benefIfsc)
+                {
+                    throw new ArgumentException("Beneficiary Ifsc does not exist in Branches.");
+                }
+
 
 
                 var beneficiary = new Beneficiary
@@ -61,7 +67,7 @@ namespace AccountApiNew.Repository
          
         }
 
-        public async Task<bool> DeleteBenficiary(long beneficiaryId)
+        public async Task<bool> DeleteBenficiary(int beneficiaryId)
         {
             try
             {
@@ -69,10 +75,10 @@ namespace AccountApiNew.Repository
                 {
                     throw new ArgumentException("Beneficiary ID must be greater than zero.", nameof(beneficiaryId));
                 }
-                var beneficiary = await _context.Beneficiaries.FirstOrDefaultAsync(b => b.BenefAccount == beneficiaryId && b.IsActive == true);
+                var beneficiary = await _context.Beneficiaries.FirstOrDefaultAsync(b => b.BenefID == beneficiaryId && b.IsActive);
                 if (beneficiary == null)
                 {
-                    throw new KeyNotFoundException("Beneficiary not found or is already inactive.");
+                    throw new ArgumentException("Beneficiary not found or is already inactive.");
                 }
 
                 beneficiary.IsActive = false;
@@ -105,7 +111,7 @@ namespace AccountApiNew.Repository
                 var accountExists = await _context.Accounts.AnyAsync(a => a.AccountId == accountId);
                 if (!accountExists)
                 {
-                    throw new KeyNotFoundException("Account does not exist.");
+                    throw new ArgumentException("Account does not exist.");
                 }
 
             
