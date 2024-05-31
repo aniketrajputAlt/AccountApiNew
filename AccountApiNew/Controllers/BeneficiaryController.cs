@@ -53,9 +53,10 @@ namespace AccountApiNew.Controllers
             try
             {
                 var result = await _beneficiaryRepository.DeleteBenficiary(id);
-            
 
-                return NoContent();
+                if (result)
+                    return NoContent();
+                else return BadRequest();
             }
             catch (ArgumentException ex)
             {
@@ -64,7 +65,7 @@ namespace AccountApiNew.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error occurred while deleting beneficiary");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error occurred while deleting beneficiary" + ex.Message);
             }
         }
     }

@@ -38,11 +38,13 @@ namespace AccountApiNew.Controllers
         [HttpPost("CreateAccount")]
         public async Task<IActionResult> CreateAccount([FromBody] AccountInputModel input)
         {
-            if (input == null)
+            try
             {
-                return BadRequest("Invalid parameters");
-            }
-               var result = await _accountRepository.CreateAccount(input);
+                if (input == null)
+                {
+                    return BadRequest("Invalid parameters");
+                }
+                var result = await _accountRepository.CreateAccount(input);
                 if (result)
                 {
                     return Ok("Account created successfully.");
@@ -51,6 +53,11 @@ namespace AccountApiNew.Controllers
                 {
                     return StatusCode(500, "Failed to create account.");
                 }
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);  
+            }
            
         }
 

@@ -33,31 +33,6 @@ namespace AccountApiNewTesting
 
         //Add Beneficiary
 
-        [TestMethod]
-        public async Task AddBeneficiary_ShouldReturnBeneficiary_WhenInputIsValid()
-        {
-            // Arrange
-            var inputModel = new BeneficiaryInputModel
-            {
-                BenefName = "John Doe",
-                BenefAccount = 2,
-                BenefIFSC = "1",
-                AccountId = 3,
-                IsActive = true
-            };
-            var beneficiaries = await _repository.ListBeneficiary(inputModel.AccountId);
-            var prevcount = beneficiaries.Count();
-            // Act
-            Beneficiary result = await _repository.Addbeneficiary(inputModel);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(inputModel.BenefName, result.BenefName);
-
-            beneficiaries = await _repository.ListBeneficiary(inputModel.AccountId);
-            var currcount = beneficiaries.Count();
-            Assert.AreEqual(prevcount + 1, currcount);
-        }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
@@ -142,19 +117,6 @@ namespace AccountApiNewTesting
             await _repository.DeleteBenficiary(invalidBeneficiaryId);
         }
 
-        [TestMethod]
-        public async Task DeleteBeneficiary_ShouldReturnTrue_WhenBeneficiaryIsDeletedSuccessfully()
-        {
-      
-            int benefid = 42;
-           
-            // Act
-            bool result = await _repository.DeleteBenficiary(benefid);
-
-            // Assert
-            Assert.IsTrue(result);
-         
-        }
 
 
         // List Beneficiary
@@ -179,7 +141,7 @@ namespace AccountApiNewTesting
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException(typeof(ArgumentException))]
         public async Task ListBeneficiary_ShouldThrowInvalidOperationException_WhenNoBeneficiariesFound()
         {
             // Arrange
@@ -240,13 +202,39 @@ namespace AccountApiNewTesting
         }
 
         [TestMethod]
+        public async Task AddBeneficiary_ShouldReturnBeneficiary_WhenInputIsValid()
+        {
+            // Arrange
+            var inputModel = new BeneficiaryInputModel
+            {
+                BenefName = "John Doe",
+                BenefAccount = 10008,
+                BenefIFSC = "1",
+                AccountId = 3,
+                IsActive = true
+            };
+            var beneficiaries = await _repository.ListBeneficiary(inputModel.AccountId);
+            var prevcount = beneficiaries.Count();
+            // Act
+            Beneficiary result = await _repository.Addbeneficiary(inputModel);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(inputModel.BenefName, result.BenefName);
+
+            beneficiaries = await _repository.ListBeneficiary(inputModel.AccountId);
+            var currcount = beneficiaries.Count();
+            Assert.AreEqual(prevcount + 1, currcount);
+        }
+
+        [TestMethod]
         public async Task PostBeneficiary_ReturnsCreatedAtActionResult_WithBeneficiary()
         {
             // Arrange
             var inputModel = new BeneficiaryInputModel
             {
                 BenefName = "Jane Doe",
-                BenefAccount = 4,
+                BenefAccount = 10008,
                 BenefIFSC = "1",
                 AccountId = 6,
                 IsActive = true
@@ -281,18 +269,33 @@ namespace AccountApiNewTesting
             Assert.AreEqual("Beneficiary name is required. (Parameter 'BenefName')", badRequestResult.Value);
         }
 
+
+        [TestMethod]
+        public async Task DeleteBeneficiary_ShouldReturnTrue_WhenBeneficiaryIsDeletedSuccessfully()
+        {
+
+            int benefid = 62;
+
+            // Act
+            bool result = await _repository.DeleteBenficiary(benefid);
+
+            // Assert
+            Assert.IsTrue(result);
+
+        }
+
         [TestMethod]
         public async Task DeleteBeneficiary_ReturnsNoContent_WhenDeleteIsSuccessful()
         {
             // Arrange
-            int beneficiaryId =33;
+            int beneficiaryId =122;
 
             // Act
             var result = await _controller.DeleteBeneficiary(beneficiaryId);
           //  var badReq = result.Result as BadRequestObjectResult;
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(ObjectResult));
+            Assert.IsInstanceOfType(result, typeof(NoContentResult));
         }
 
         [TestMethod]

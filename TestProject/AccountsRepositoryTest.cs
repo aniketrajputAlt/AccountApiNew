@@ -189,22 +189,6 @@ namespace AccountApiNewTesting
             // No need for explicit assertion, the ExpectedException attribute handles it
         }
 
-        [TestMethod]
-        public async Task DeleteAccount_ValidId_DeletesAccount()
-        {
-            // Arrange
-            long accountIdToDelete = 10072;
-
-            // Act
-            await _repository.DeleteAccount(accountIdToDelete);
-
-            var exception = await Assert.ThrowsExceptionAsync<Exception>(() => _repository.GetAccountById(accountIdToDelete));
-            Assert.AreEqual("Account was deleted by the user", exception.Message);
-           
-
-            // Assert
-            // Optionally, you can assert that the account with the given ID no longer exists in the repository
-        }
 
 
 
@@ -342,16 +326,32 @@ namespace AccountApiNewTesting
         {
             // Act
             
-            var result = await _controller.DeleteAccount(10003);
+            var result = await _controller.DeleteAccount(10156);
 
             // Assert
             Assert.IsNotNull(result);
-            if (result is OkObjectResult okResult)
-            {
-                Assert.AreEqual(200, okResult.StatusCode);
-                Assert.AreEqual("Account deleted successfully.", okResult.Value);
-            }
+            Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+            var okResult = result as OkObjectResult;
+            Assert.AreEqual("Account deleted successfully.", okResult?.Value);
+           
           
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_ValidId_DeletesAccount()
+        {
+            // Arrange
+            long accountIdToDelete = 10083;
+
+            // Act
+            await _repository.DeleteAccount(accountIdToDelete);
+
+            var exception = await Assert.ThrowsExceptionAsync<Exception>(() => _repository.GetAccountById(accountIdToDelete));
+            Assert.AreEqual("Account was deleted by the user", exception.Message);
+
+
+            // Assert
+            // Optionally, you can assert that the account with the given ID no longer exists in the repository
         }
 
         [TestMethod]

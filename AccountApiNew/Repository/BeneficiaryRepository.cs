@@ -26,7 +26,12 @@ namespace AccountApiNew.Repository
                 {
                     throw new ArgumentException("Beneficiary name is required.", nameof(beneficiaryInput.BenefName));
                 }
-             
+                var bExists=await _context.Beneficiaries.FirstOrDefaultAsync(c=>c.AccountId==beneficiaryInput.AccountId && c.BenefAccount==beneficiaryInput.BenefAccount && c.IsActive);
+
+                if(bExists is not null)
+                {
+                    throw new ArgumentException("Beneficiary already exist for this account.");
+                }
                 var accountExists = await _context.Accounts.AnyAsync(a => a.AccountId == beneficiaryInput.BenefAccount);
                 if (!accountExists)
                 {
@@ -122,7 +127,7 @@ namespace AccountApiNew.Repository
                 
                 if (!beneficiaries.Any())
                 {
-                    throw new InvalidOperationException("No beneficiaries found for the given account ID.");
+                    throw new ArgumentException("No beneficiaries found for the given account ID.");
                 }
 
 

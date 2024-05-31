@@ -102,12 +102,12 @@ namespace AccountApiNew.Model
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }
 
-       // public virtual Customer Customer { get; set; }
+    
 
         [ForeignKey("DocType")]
         public int DocTypeId { get; set; }
 
-        //public virtual DocType DocType { get; set; }
+       
 
         public bool IsActive { get; set; }
     }
@@ -206,7 +206,7 @@ namespace AccountApiNew.Model
         [ForeignKey("Role")]
         public int RoleId { get; set; }
 
-      //  public virtual Role Role { get; set; }
+    
     }
     public class PasswordChangeModel
     {
